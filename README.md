@@ -1,2 +1,2 @@
 Test markdown bestand
-German charachter: äöüß
+German charachter: äöüßÄÖ
