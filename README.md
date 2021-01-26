@@ -1,1 +1,1 @@
-Hallo publiek vanuit het verleden!
+Hallo publiek!
