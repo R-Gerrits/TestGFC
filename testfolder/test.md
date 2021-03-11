@@ -1,1 +1,14 @@
-test of markdown in folder
+''' java 
+if (true){
+// do something
+}
+'''
+
+```java 
+if (true){
+// do something
+}
+``` 
+
+`if (true){
+// do something}`
