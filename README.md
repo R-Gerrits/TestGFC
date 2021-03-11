@@ -58,7 +58,16 @@ Bratskich narodov sojoez vekovoj,
 Predkami dannaja moedrost narodnaja!
 Slavsja, strana! My gordimsja toboj!
 
-Slavsja, Otetsjestvo nasje svobodnoje,
+'Slavsja, Otetsjestvo nasje svobodnoje,'
 Bratskich narodov sojoez vekovoj,
-Predkami dannaja moedrost narodnaja!
+'Predkami' dannaja moedrost narodnaja!
 Slavsja, strana! My gordimsja toboj!
+
+
+
+''' java 
+private final test
+if(test == true){
+//do something
+}
+'''
