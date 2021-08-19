@@ -1,8 +1,3 @@
-/**
- * Author: Michael Hall
- * URL: http://www.bankofcanada.ca/
- * License: GPL-2 | GPL-3
- */
 SyntaxHighlighter.brushes.Gherkin = function()
 {
  /**
