@@ -1,0 +1,121 @@
+'początkowa linia kodu puml. CRM.CIM-GUS.getGUSdata to nazwa pliku, pod jaką zostanie wyeksportowany diagram w VCS.
+@startuml SAPHR_docs_signing
+ 
+'globalne ustawienia stylów
+skinparam titleBorderRoundCorner 15
+skinparam titleBorderThickness 2
+skinparam titleBorderColor red
+skinparam titleBackgroundColor Aqua-pink
+skinparam backgroundColor #whitesmoke
+ 
+'tytuł diagramu. zawiera domenę oraz business capability zgodne z EIRA oraz wersję diagramu.
+title Poświadczanie dokumentów HR TMPL za pomocą API DocuSign \n(v.0.2)
+autonumber "[000]"
+autoactivate on
+ 
+'obrazek skalujemy nieco w dół
+scale 8/10
+ 
+'legenda kolorów zgodnie ze standardem HLD 2.0.
+legend top right
+    | <b>aktor lub\n<b>komponent | <b>znaczenie  | <b>strzałka|
+    |<#DeepSkyBlue>| zmiana | <#blueviolet>|
+    |<#Yellow>| konfiguracja | <#gold> |
+    |<#SpringGreen>| nowy | <#forestgreen> |
+    |<#Red>| usuwany |  <#Red> |
+    |<#White>| bez zmian | <#black> |
+endlegend
+ 
+'boxów używamy do wydzielenia komponentów w obszarach, np. funkcjonalnych 
+box "TMPL" #pink
+'1. dyrektywą order ustawiamy żądaną kolejność uczestników, których kolorujemy zgodnie z legendą
+
+actor "Sygnatariusz 1" as Signatory1 order 5
+actor "Sygnatariusz 2" as Signatory2 order 6
+actor "Operator HR" as HRop order 4
+
+' participant "SAP HR / HCM \ne-teczka" as SAPHR order 4 #DeepSkyBlue
+' participant "Web proxy" as WP order 7 #DeepSkyBlue
+participant Exchange order 7 #White
+
+' participant "Filenet" as P8 order 3 #DeepSkyBlue
+end box
+ 
+box "   DocuSign\n<< Internet>>" #White
+participant "DocuSign\nweb portal" as docuSign order 10 #White
+' participant eSignatureAPI order 9 #White
+end box
+
+
+
+== SEQ5:podpisywanie dokumentu w DocuSign ==
+
+...
+docuSign <-]: koperta gotowa do wysłania
+ref over docuSign: patrz [[https://confluence/display/DBT/Diagramy+sekwencji+AR-1770#DiagramysekwencjiAR1770-SEQ-2Tworzeniekopertdokument%C3%B3w SEQ 2: Tworzenie kopert dokumentów]]
+
+docuSign -> Exchange: wyślij notyfikację email do Sygnatariusza 1
+deactivate
+deactivate
+
+activate Signatory1
+...
+
+group Sygnatariusz 1
+
+     Signatory1 ->> Exchange: odbierz email
+     deactivate
+     Signatory1  -[#Green]>> docuSign: przejrzyj dokument do podpisu (adres = viewURL)
+     deactivate
+     Signatory1  -[#Green]>> docuSign: wybierz podpis kwalifikowany <b>EU Qualified
+     deactivate
+     Signatory1  -[#Green]>> docuSign: podpisz dokument
+     deactivate Signatory1
+     ...
+     docuSign -[#Green]> docuSign: obsługa notyfikacji
+     docuSign -[#Green]>> Exchange: email z monitem \no podpisanie dokumentu
+     deactivate
+     deactivate 
+     deactivate docuSign
+
+     activate Signatory2
+end group
+
+...
+group Sygnatariusz 2
+     
+     Signatory2 -[#Green]>> Exchange: odbierz email
+     deactivate 
+     Signatory2 -[#Green]>> docuSign: przejrzyj dokument
+     ' deactivate
+     alt Akceptacja dokumentu
+          Signatory2  -[#Green]>> docuSign: wybierz podpis <b>DS Electronic
+          deactivate
+          Signatory2  -[#Green]>> docuSign: podpisz dokument
+          deactivate docuSign
+     else odmowa podpisania dokumentu
+          Signatory2  -[#Green]>> docuSign: klawisz Reject
+          deactivate Signatory2
+          deactivate docuSign          
+     end group
+
+end group
+...
+docuSign -[#Green]> docuSign: obsługa notyfikacji
+docuSign -[#Green]>> Exchange: email ze statusem poświadczenia dokumentu
+deactivate
+deactivate
+ref over docuSign: patrz [[https://confluence/display/DBT/Diagramy+sekwencji+AR-1770#DiagramysekwencjiAR1770-SEQ-4Synchronizacjastatus%C3%B3wkopert SEQ-4 Synchronizacja statusów kopert]]
+docuSign ->]: kontyynuuj wg 
+deactivate
+deactivate docuSign
+activate HRop
+...
+HRop ->> Exchange: odbierz email
+deactivate
+...
+HRop ->[: podjęcie działań
+
+deactivate HRop
+deactivate HRop
+@enduml
